@@ -588,11 +588,11 @@ class RequestDebugDescriptionTestCase: BaseTestCase {
         XCTAssertEqual(components[0..<3], ["$", "curl", "-i"], "components should be equal")
         XCTAssertEqual(components[3..<5], ["-X", "POST"], "command should contain explicit -X flag")
 
-        XCTAssertNotNil(request.debugDescription.rangeOfString("-H \"Content-Type: application/json\""), "command should contain Content-Type header")
-        XCTAssertNotNil(request.debugDescription.rangeOfString("-d \"{"), "command should contain body parameter")
-        XCTAssertNotNil(request.debugDescription.rangeOfString("\\\"f'oo\\\":\\\"ba'r\\\""), "command should contain JSON parameters")
-        XCTAssertNotNil(request.debugDescription.rangeOfString("\\\"fo\\\\\\\"o\\\":\\\"b\\\\\\\"ar\\\""), "command should contain JSON parameters")
-        XCTAssertNotNil(request.debugDescription.rangeOfString("\\\"foo\\\":\\\"bar\\"), "command should contain JSON parameters")
+        XCTAssertNotNil(request.debugDescription.range(of: "-H \"Content-Type: application/json\""), "command should contain Content-Type header")
+        XCTAssertNotNil(request.debugDescription.range(of: "-d \"{"), "command should contain body parameter")
+        XCTAssertNotNil(request.debugDescription.range(of: "\\\"f'oo\\\":\\\"ba'r\\\""), "command should contain JSON parameters")
+        XCTAssertNotNil(request.debugDescription.range(of: "\\\"fo\\\\\\\"o\\\":\\\"b\\\\\\\"ar\\\""), "command should contain JSON parameters")
+        XCTAssertNotNil(request.debugDescription.range(of: "\\\"foo\\\":\\\"bar\\"), "command should contain JSON parameters")
 
         XCTAssertEqual(components.last ?? "", "\"\(URLString)\"", "URL component should be equal")
     }
