@@ -72,7 +72,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
 
     override func setUp() {
         super.setUp()
-        configuration = URLSessionConfiguration.ephemeral()
+        configuration = URLSessionConfiguration.ephemeral
     }
 
     // MARK: Default Behavior Tests

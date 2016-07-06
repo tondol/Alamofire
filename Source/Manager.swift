@@ -36,7 +36,7 @@ public class Manager {
         for any ad hoc requests.
     */
     public static let sharedInstance: Manager = {
-        let configuration = URLSessionConfiguration.default()
+        let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = Manager.defaultHTTPHeaders
 
         return Manager(configuration: configuration)
@@ -50,7 +50,7 @@ public class Manager {
         let acceptEncoding: String = "gzip;q=1.0, compress;q=0.5"
 
         // Accept-Language HTTP Header; see https://tools.ietf.org/html/rfc7231#section-5.3.5
-        let acceptLanguage = Locale.preferredLanguages().prefix(6).enumerated().map { index, languageCode in
+        let acceptLanguage = Locale.preferredLanguages.prefix(6).enumerated().map { index, languageCode in
             let quality = 1.0 - (Double(index) * 0.1)
             return "\(languageCode);q=\(quality)"
         }.joined(separator: ", ")
@@ -58,7 +58,7 @@ public class Manager {
         // User-Agent Header; see https://tools.ietf.org/html/rfc7231#section-5.5.3
         // Example: `iOS Example/1.0 (com.alamofire.iOS-Example; build:1; iOS 9.3.0) Alamofire/3.4.2`
         let userAgent: String = {
-            if let info = Bundle.main().infoDictionary {
+            if let info = Bundle.main.infoDictionary {
                 let executable = info[kCFBundleExecutableKey as String] as? String ?? "Unknown"
                 let bundle = info[kCFBundleIdentifierKey as String] as? String ?? "Unknown"
                 let appVersion = info["CFBundleShortVersionString"] as? String ?? "Unknown"
@@ -68,7 +68,7 @@ public class Manager {
                     let versionString: String
 
                     if #available(OSX 10.10, *) {
-                        let version = ProcessInfo.processInfo().operatingSystemVersion
+                        let version = ProcessInfo.processInfo.operatingSystemVersion
                         versionString = "\(version.majorVersion).\(version.minorVersion).\(version.patchVersion)"
                     } else {
                         versionString = "10.9"
@@ -154,7 +154,7 @@ public class Manager {
         - returns: The new `Manager` instance.
     */
     public init(
-        configuration: URLSessionConfiguration = URLSessionConfiguration.default(),
+        configuration: URLSessionConfiguration = URLSessionConfiguration.default,
         delegate: SessionDelegate = SessionDelegate(),
         serverTrustPolicyManager: ServerTrustPolicyManager? = nil)
     {
@@ -527,7 +527,7 @@ public class Manager {
                 delegate.urlSession(session, task: task, didCompleteWithError: error)
             }
 
-            NotificationCenter.default().post(name: Notification.Name(rawValue: Notifications.Task.DidComplete), object: task)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: Notifications.Task.DidComplete), object: task)
 
             self[task] = nil
         }
