@@ -1651,7 +1651,6 @@
 				4CCB207E1D45563900C64D5B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 		4CF627041BA7CB3E0011A099 /* Build configuration list for PBXNativeTarget "Alamofire tvOS" */ = {
 			isa = XCConfigurationList;
