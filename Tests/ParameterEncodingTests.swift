@@ -52,7 +52,7 @@ class URLParameterEncodingTestCase: ParameterEncodingTestCase {
 
         // When
         let (URLRequest, _) = encoding.encode(self.urlRequest, parameters: parameters)
-        
+
         // Then
         XCTAssertNil(URLRequest.url?.query, "query should be nil")
     }

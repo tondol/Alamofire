@@ -218,7 +218,7 @@ extension Request {
             }
 
             var convertedEncoding = encoding
-            
+
             if let encodingName = response?.textEncodingName, convertedEncoding == nil {
                 convertedEncoding = String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(
                     CFStringConvertIANACharSetNameToEncoding(encodingName))
