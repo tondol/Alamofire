@@ -107,6 +107,7 @@ extension URLRequest {
 
     - returns: The created request.
 */
+@discardableResult
 public func request(
     _ method: Method,
     _ URLString: URLStringConvertible,
@@ -133,6 +134,7 @@ public func request(
 
     - returns: The created request.
 */
+@discardableResult
 public func request(_ urlRequest: URLRequestConvertible) -> Request {
     return Manager.sharedInstance.request(urlRequest.urlRequest)
 }
@@ -151,6 +153,7 @@ public func request(_ urlRequest: URLRequestConvertible) -> Request {
 
     - returns: The created upload request.
 */
+@discardableResult
 public func upload(
     _ method: Method,
     _ URLString: URLStringConvertible,
@@ -169,6 +172,7 @@ public func upload(
 
     - returns: The created upload request.
 */
+@discardableResult
 public func upload(_ URLRequest: URLRequestConvertible, file: URL) -> Request {
     return Manager.sharedInstance.upload(URLRequest, file: file)
 }
@@ -185,6 +189,7 @@ public func upload(_ URLRequest: URLRequestConvertible, file: URL) -> Request {
 
     - returns: The created upload request.
 */
+@discardableResult
 public func upload(
     _ method: Method,
     _ URLString: URLStringConvertible,
@@ -203,6 +208,7 @@ public func upload(
 
     - returns: The created upload request.
 */
+@discardableResult
 public func upload(_ URLRequest: URLRequestConvertible, data: Data) -> Request {
     return Manager.sharedInstance.upload(URLRequest, data: data)
 }
@@ -219,6 +225,7 @@ public func upload(_ URLRequest: URLRequestConvertible, data: Data) -> Request {
 
     - returns: The created upload request.
 */
+@discardableResult
 public func upload(
     _ method: Method,
     _ URLString: URLStringConvertible,
@@ -237,6 +244,7 @@ public func upload(
 
     - returns: The created upload request.
 */
+@discardableResult
 public func upload(_ URLRequest: URLRequestConvertible, stream: InputStream) -> Request {
     return Manager.sharedInstance.upload(urlRequest: URLRequest, stream: stream)
 }
@@ -311,6 +319,7 @@ public func upload(
 
     - returns: The created download request.
 */
+@discardableResult
 public func download(
     _ method: Method,
     _ URLString: URLStringConvertible,
@@ -338,6 +347,7 @@ public func download(
 
     - returns: The created download request.
 */
+@discardableResult
 public func download(_ URLRequest: URLRequestConvertible, destination: Request.DownloadFileDestination) -> Request {
     return Manager.sharedInstance.download(URLRequest, destination: destination)
 }
@@ -355,6 +365,7 @@ public func download(_ URLRequest: URLRequestConvertible, destination: Request.D
 
     - returns: The created download request.
 */
+@discardableResult
 public func download(resumeData data: Data, destination: Request.DownloadFileDestination) -> Request {
     return Manager.sharedInstance.download(data, destination: destination)
 }
