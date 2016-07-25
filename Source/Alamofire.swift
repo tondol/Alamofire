@@ -97,7 +97,7 @@ extension URLRequest {
 
         if let headers = headers {
             for (headerField, headerValue) in headers {
-                self.setValue(headerValue, forHTTPHeaderField: headerField)
+                setValue(headerValue, forHTTPHeaderField: headerField)
             }
         }
     }
