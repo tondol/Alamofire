@@ -27,12 +27,12 @@ import Foundation
 import XCTest
 
 private struct TestCertificates {
-    static let RootCA = TestCertificates.certificateWithFileName("expired.badssl.com-root-ca")
-    static let IntermediateCA1 = TestCertificates.certificateWithFileName("expired.badssl.com-intermediate-ca-1")
-    static let IntermediateCA2 = TestCertificates.certificateWithFileName("expired.badssl.com-intermediate-ca-2")
-    static let Leaf = TestCertificates.certificateWithFileName("expired.badssl.com-leaf")
+    static let rootCA = TestCertificates.certificate(withFileName: "expired.badssl.com-root-ca")
+    static let intermediateCA1 = TestCertificates.certificate(withFileName: "expired.badssl.com-intermediate-ca-1")
+    static let intermediateCA2 = TestCertificates.certificate(withFileName: "expired.badssl.com-intermediate-ca-2")
+    static let leaf = TestCertificates.certificate(withFileName: "expired.badssl.com-leaf")
 
-    static func certificateWithFileName(_ fileName: String) -> SecCertificate {
+    static func certificate(withFileName fileName: String) -> SecCertificate {
         class Locater {}
         let filePath = Bundle(for: Locater.self).path(forResource: fileName, ofType: "cer")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: filePath))
@@ -45,12 +45,12 @@ private struct TestCertificates {
 // MARK: -
 
 private struct TestPublicKeys {
-    static let RootCA = TestPublicKeys.publicKeyForCertificate(TestCertificates.RootCA)
-    static let IntermediateCA1 = TestPublicKeys.publicKeyForCertificate(TestCertificates.IntermediateCA1)
-    static let IntermediateCA2 = TestPublicKeys.publicKeyForCertificate(TestCertificates.IntermediateCA2)
-    static let Leaf = TestPublicKeys.publicKeyForCertificate(TestCertificates.Leaf)
+    static let rootCA = TestPublicKeys.publicKey(for: TestCertificates.rootCA)
+    static let intermediateCA1 = TestPublicKeys.publicKey(for: TestCertificates.intermediateCA1)
+    static let intermediateCA2 = TestPublicKeys.publicKey(for: TestCertificates.intermediateCA2)
+    static let leaf = TestPublicKeys.publicKey(for: TestCertificates.leaf)
 
-    static func publicKeyForCertificate(_ certificate: SecCertificate) -> SecKey {
+    static func publicKey(for certificate: SecCertificate) -> SecKey {
         let policy = SecPolicyCreateBasicX509()
         var trust: SecTrust?
         SecTrustCreateWithCertificates(certificate, policy, &trust)
@@ -84,7 +84,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -118,7 +118,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -140,7 +140,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
 
     func testThatExpiredCertificateRequestFailsWhenPinningLeafCertificateWithCertificateChainValidation() {
         // Given
-        let certificates = [TestCertificates.Leaf]
+        let certificates = [TestCertificates.leaf]
         let policies: [String: ServerTrustPolicy] = [
             host: .pinCertificates(certificates: certificates, validateCertificateChain: true, validateHost: true)
         ]
@@ -154,7 +154,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -175,10 +175,10 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
     func testThatExpiredCertificateRequestFailsWhenPinningAllCertificatesWithCertificateChainValidation() {
         // Given
         let certificates = [
-            TestCertificates.Leaf,
-            TestCertificates.IntermediateCA1,
-            TestCertificates.IntermediateCA2,
-            TestCertificates.RootCA
+            TestCertificates.leaf,
+            TestCertificates.intermediateCA1,
+            TestCertificates.intermediateCA2,
+            TestCertificates.rootCA
         ]
 
         let policies: [String: ServerTrustPolicy] = [
@@ -194,7 +194,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -214,7 +214,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
 
     func testThatExpiredCertificateRequestSucceedsWhenPinningLeafCertificateWithoutCertificateChainValidation() {
         // Given
-        let certificates = [TestCertificates.Leaf]
+        let certificates = [TestCertificates.leaf]
         let policies: [String: ServerTrustPolicy] = [
             host: .pinCertificates(certificates: certificates, validateCertificateChain: false, validateHost: true)
         ]
@@ -228,7 +228,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -242,7 +242,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
 
     func testThatExpiredCertificateRequestSucceedsWhenPinningIntermediateCACertificateWithoutCertificateChainValidation() {
         // Given
-        let certificates = [TestCertificates.IntermediateCA2]
+        let certificates = [TestCertificates.intermediateCA2]
         let policies: [String: ServerTrustPolicy] = [
             host: .pinCertificates(certificates: certificates, validateCertificateChain: false, validateHost: true)
         ]
@@ -256,7 +256,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -270,7 +270,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
 
     func testThatExpiredCertificateRequestSucceedsWhenPinningRootCACertificateWithoutCertificateChainValidation() {
         // Given
-        let certificates = [TestCertificates.RootCA]
+        let certificates = [TestCertificates.rootCA]
         let policies: [String: ServerTrustPolicy] = [
             host: .pinCertificates(certificates: certificates, validateCertificateChain: false, validateHost: true)
         ]
@@ -284,7 +284,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -300,7 +300,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
 
     func testThatExpiredCertificateRequestFailsWhenPinningLeafPublicKeyWithCertificateChainValidation() {
         // Given
-        let publicKeys = [TestPublicKeys.Leaf]
+        let publicKeys = [TestPublicKeys.leaf]
         let policies: [String: ServerTrustPolicy] = [
             host: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: true, validateHost: true)
         ]
@@ -314,7 +314,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -334,7 +334,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
 
     func testThatExpiredCertificateRequestSucceedsWhenPinningLeafPublicKeyWithoutCertificateChainValidation() {
         // Given
-        let publicKeys = [TestPublicKeys.Leaf]
+        let publicKeys = [TestPublicKeys.leaf]
         let policies: [String: ServerTrustPolicy] = [
             host: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: false, validateHost: true)
         ]
@@ -348,7 +348,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -362,7 +362,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
 
     func testThatExpiredCertificateRequestSucceedsWhenPinningIntermediateCAPublicKeyWithoutCertificateChainValidation() {
         // Given
-        let publicKeys = [TestPublicKeys.IntermediateCA2]
+        let publicKeys = [TestPublicKeys.intermediateCA2]
         let policies: [String: ServerTrustPolicy] = [
             host: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: false, validateHost: true)
         ]
@@ -376,7 +376,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -390,7 +390,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
 
     func testThatExpiredCertificateRequestSucceedsWhenPinningRootCAPublicKeyWithoutCertificateChainValidation() {
         // Given
-        let publicKeys = [TestPublicKeys.RootCA]
+        let publicKeys = [TestPublicKeys.rootCA]
         let policies: [String: ServerTrustPolicy] = [
             host: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: false, validateHost: true)
         ]
@@ -404,7 +404,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -430,7 +430,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -462,7 +462,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -492,7 +492,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         var error: NSError?
 
         // When
-        manager.dataRequest(method: .GET, urlString: urlString)
+        manager.request(urlString, withMethod: .get)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
