@@ -90,7 +90,7 @@ class SessionManagerTestCase: BaseTestCase {
     func testInitializerWithSpecifiedArguments() {
         // Given
         let configuration = URLSessionConfiguration.default
-        let delegate = SessionManager.SessionDelegate()
+        let delegate = SessionDelegate()
         let serverTrustPolicyManager = ServerTrustPolicyManager(policies: [:])
 
         // When
@@ -108,7 +108,7 @@ class SessionManagerTestCase: BaseTestCase {
 
     func testThatFailableInitializerSucceedsWithDefaultArguments() {
         // Given
-        let delegate = SessionManager.SessionDelegate()
+        let delegate = SessionDelegate()
         let session: URLSession = {
             let configuration = URLSessionConfiguration.default
             return URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
@@ -128,7 +128,7 @@ class SessionManagerTestCase: BaseTestCase {
 
     func testThatFailableInitializerSucceedsWithSpecifiedArguments() {
         // Given
-        let delegate = SessionManager.SessionDelegate()
+        let delegate = SessionDelegate()
         let session: URLSession = {
             let configuration = URLSessionConfiguration.default
             return URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
@@ -150,10 +150,10 @@ class SessionManagerTestCase: BaseTestCase {
 
     func testThatFailableInitializerFailsWithWhenDelegateDoesNotEqualSessionDelegate() {
         // Given
-        let delegate = SessionManager.SessionDelegate()
+        let delegate = SessionDelegate()
         let session: URLSession = {
             let configuration = URLSessionConfiguration.default
-            return URLSession(configuration: configuration, delegate: SessionManager.SessionDelegate(), delegateQueue: nil)
+            return URLSession(configuration: configuration, delegate: SessionDelegate(), delegateQueue: nil)
         }()
 
         // When
@@ -165,7 +165,7 @@ class SessionManagerTestCase: BaseTestCase {
 
     func testThatFailableInitializerFailsWhenSessionDelegateIsNil() {
         // Given
-        let delegate = SessionManager.SessionDelegate()
+        let delegate = SessionDelegate()
         let session: URLSession = {
             let configuration = URLSessionConfiguration.default
             return URLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
@@ -185,15 +185,15 @@ class SessionManagerTestCase: BaseTestCase {
         let manager = SessionManager()
         manager.startRequestsImmediately = false
 
-        let URL = Foundation.URL(string: "https://httpbin.org/get")!
-        let URLRequest = Foundation.URLRequest(url: URL)
+        let url = URL(string: "https://httpbin.org/get")!
+        let urlRequest = URLRequest(url: url)
 
-        let expectation = self.expectation(description: "\(URL)")
+        let expectation = self.expectation(description: "\(url)")
 
         var response: HTTPURLResponse?
 
         // When
-        manager.request(URLRequest)
+        manager.dataRequest(urlRequest: urlRequest)
             .response { _, responseResponse, _, _ in
                 response = responseResponse
                 expectation.fulfill()
@@ -214,11 +214,11 @@ class SessionManagerTestCase: BaseTestCase {
         var manager: SessionManager? = SessionManager()
         manager?.startRequestsImmediately = false
 
-        let URL = Foundation.URL(string: "https://httpbin.org/get")!
-        let URLRequest = Foundation.URLRequest(url: URL)
+        let url = URL(string: "https://httpbin.org/get")!
+        let urlRequest = URLRequest(url: url)
 
         // When
-        let request = manager?.request(URLRequest)
+        let request = manager?.dataRequest(urlRequest: urlRequest)
         manager = nil
 
         // Then
@@ -231,11 +231,11 @@ class SessionManagerTestCase: BaseTestCase {
         var manager: SessionManager? = SessionManager()
         manager!.startRequestsImmediately = false
 
-        let URL = Foundation.URL(string: "https://httpbin.org/get")!
-        let URLRequest = Foundation.URLRequest(url: URL)
+        let url = URL(string: "https://httpbin.org/get")!
+        let urlRequest = URLRequest(url: url)
 
         // When
-        let request = manager!.request(URLRequest)
+        let request = manager!.dataRequest(urlRequest: urlRequest)
         request.cancel()
         manager = nil
 
@@ -300,7 +300,7 @@ class ManagerConfigurationHeadersTestCase: BaseTestCase {
         var response: Response<AnyObject, NSError>?
 
         // When
-        manager.request(.GET, "https://httpbin.org/headers")
+        manager.dataRequest(method: .GET, urlString: "https://httpbin.org/headers")
             .responseJSON { closureResponse in
                 response = closureResponse
                 expectation.fulfill()

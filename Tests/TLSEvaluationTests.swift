@@ -33,8 +33,8 @@ private struct TestCertificates {
     static let Leaf = TestCertificates.certificateWithFileName("expired.badssl.com-leaf")
 
     static func certificateWithFileName(_ fileName: String) -> SecCertificate {
-        class Bundle {}
-        let filePath = Foundation.Bundle(for: Bundle.self).path(forResource: fileName, ofType: "cer")!
+        class Locater {}
+        let filePath = Bundle(for: Locater.self).path(forResource: fileName, ofType: "cer")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: filePath))
         let certificate = SecCertificateCreateWithData(nil, data)!
 
@@ -64,7 +64,7 @@ private struct TestPublicKeys {
 // MARK: -
 
 class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
-    let URL = "https://expired.badssl.com/"
+    let urlString = "https://expired.badssl.com/"
     let host = "expired.badssl.com"
     var configuration: URLSessionConfiguration!
 
@@ -79,12 +79,12 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
 
     func testThatExpiredCertificateRequestFailsWithNoServerTrustPolicy() {
         // Given
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         let manager = SessionManager(configuration: configuration)
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -114,11 +114,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -150,11 +150,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -190,11 +190,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -224,11 +224,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -252,11 +252,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -280,11 +280,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -310,11 +310,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -344,11 +344,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -372,11 +372,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -400,11 +400,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -426,11 +426,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -458,11 +458,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
@@ -488,11 +488,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: policies)
         )
 
-        weak var expectation = self.expectation(description: "\(URL)")
+        weak var expectation = self.expectation(description: "\(urlString)")
         var error: NSError?
 
         // When
-        manager.request(.GET, URL)
+        manager.dataRequest(method: .GET, urlString: urlString)
             .response { _, _, _, responseError in
                 error = responseError
                 expectation?.fulfill()
