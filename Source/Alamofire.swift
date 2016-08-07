@@ -83,7 +83,7 @@ extension URLRequest {
             self.init(url: URL(string: urlString.urlString)!)
         }
 
-        self.httpMethod = method.rawValue
+        httpMethod = method.rawValue
 
         if let headers = headers {
             for (headerField, headerValue) in headers {
