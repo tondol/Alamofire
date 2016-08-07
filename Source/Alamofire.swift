@@ -96,7 +96,7 @@ extension URLRequest {
 // MARK: - Request Methods
 
 /**
-    Creates a request using the shared manager instance for the specified method, URL string, parameters, and
+    Creates a request using the shared session manager instance for the specified method, URL string, parameters, and
     parameter encoding.
 
     - parameter method:     The HTTP method.
@@ -116,7 +116,7 @@ public func request(
     headers: [String: String]? = nil)
     -> Request
 {
-    return Manager.sharedInstance.request(
+    return SessionManager.sharedInstance.request(
         method,
         URLString,
         parameters: parameters,
@@ -126,7 +126,7 @@ public func request(
 }
 
 /**
-    Creates a request using the shared manager instance for the specified URL request.
+    Creates a request using the shared session manager instance for the specified URL request.
 
     If `startRequestsImmediately` is `true`, the request will have `resume()` called before being returned.
 
@@ -136,7 +136,7 @@ public func request(
 */
 @discardableResult
 public func request(_ urlRequest: URLRequestConvertible) -> Request {
-    return Manager.sharedInstance.request(urlRequest.urlRequest)
+    return SessionManager.sharedInstance.request(urlRequest.urlRequest)
 }
 
 // MARK: - Upload Methods
@@ -144,7 +144,7 @@ public func request(_ urlRequest: URLRequestConvertible) -> Request {
 // MARK: File
 
 /**
-    Creates an upload request using the shared manager instance for the specified method, URL string, and file.
+    Creates an upload request using the shared session manager instance for the specified method, URL string, and file.
 
     - parameter method:    The HTTP method.
     - parameter URLString: The URL string.
@@ -161,11 +161,11 @@ public func upload(
     file: URL)
     -> Request
 {
-    return Manager.sharedInstance.upload(method, URLString, headers: headers, file: file)
+    return SessionManager.sharedInstance.upload(method, URLString, headers: headers, file: file)
 }
 
 /**
-    Creates an upload request using the shared manager instance for the specified URL request and file.
+    Creates an upload request using the shared session manager instance for the specified URL request and file.
 
     - parameter URLRequest: The URL request.
     - parameter file:       The file to upload.
@@ -174,13 +174,13 @@ public func upload(
 */
 @discardableResult
 public func upload(_ URLRequest: URLRequestConvertible, file: URL) -> Request {
-    return Manager.sharedInstance.upload(URLRequest, file: file)
+    return SessionManager.sharedInstance.upload(URLRequest, file: file)
 }
 
 // MARK: Data
 
 /**
-    Creates an upload request using the shared manager instance for the specified method, URL string, and data.
+    Creates an upload request using the shared session manager instance for the specified method, URL string, and data.
 
     - parameter method:    The HTTP method.
     - parameter URLString: The URL string.
@@ -197,11 +197,11 @@ public func upload(
     data: Data)
     -> Request
 {
-    return Manager.sharedInstance.upload(method, URLString, headers: headers, data: data)
+    return SessionManager.sharedInstance.upload(method, URLString, headers: headers, data: data)
 }
 
 /**
-    Creates an upload request using the shared manager instance for the specified URL request and data.
+    Creates an upload request using the shared session manager instance for the specified URL request and data.
 
     - parameter URLRequest: The URL request.
     - parameter data:       The data to upload.
@@ -210,13 +210,13 @@ public func upload(
 */
 @discardableResult
 public func upload(_ URLRequest: URLRequestConvertible, data: Data) -> Request {
-    return Manager.sharedInstance.upload(URLRequest, data: data)
+    return SessionManager.sharedInstance.upload(URLRequest, data: data)
 }
 
 // MARK: Stream
 
 /**
-    Creates an upload request using the shared manager instance for the specified method, URL string, and stream.
+    Creates an upload request using the shared session manager instance for the specified method, URL string, and stream.
 
     - parameter method:    The HTTP method.
     - parameter URLString: The URL string.
@@ -233,11 +233,11 @@ public func upload(
     stream: InputStream)
     -> Request
 {
-    return Manager.sharedInstance.upload(method, URLString, headers: headers, stream: stream)
+    return SessionManager.sharedInstance.upload(method, URLString, headers: headers, stream: stream)
 }
 
 /**
-    Creates an upload request using the shared manager instance for the specified URL request and stream.
+    Creates an upload request using the shared session manager instance for the specified URL request and stream.
 
     - parameter URLRequest: The URL request.
     - parameter stream:     The stream to upload.
@@ -246,13 +246,13 @@ public func upload(
 */
 @discardableResult
 public func upload(_ URLRequest: URLRequestConvertible, stream: InputStream) -> Request {
-    return Manager.sharedInstance.upload(urlRequest: URLRequest, stream: stream)
+    return SessionManager.sharedInstance.upload(urlRequest: URLRequest, stream: stream)
 }
 
 // MARK: MultipartFormData
 
 /**
-    Creates an upload request using the shared manager instance for the specified method and URL string.
+    Creates an upload request using the shared session manager instance for the specified method and URL string.
 
     - parameter method:                  The HTTP method.
     - parameter URLString:               The URL string.
@@ -267,10 +267,10 @@ public func upload(
     _ URLString: URLStringConvertible,
     headers: [String: String]? = nil,
     multipartFormData: (MultipartFormData) -> Void,
-    encodingMemoryThreshold: UInt64 = Manager.MultipartFormDataEncodingMemoryThreshold,
-    encodingCompletion: ((Manager.MultipartFormDataEncodingResult) -> Void)?)
+    encodingMemoryThreshold: UInt64 = SessionManager.MultipartFormDataEncodingMemoryThreshold,
+    encodingCompletion: ((SessionManager.MultipartFormDataEncodingResult) -> Void)?)
 {
-    return Manager.sharedInstance.upload(
+    return SessionManager.sharedInstance.upload(
         method,
         URLString,
         headers: headers,
@@ -281,7 +281,7 @@ public func upload(
 }
 
 /**
-    Creates an upload request using the shared manager instance for the specified method and URL string.
+    Creates an upload request using the shared session manager instance for the specified method and URL string.
 
     - parameter URLRequest:              The URL request.
     - parameter multipartFormData:       The closure used to append body parts to the `MultipartFormData`.
@@ -292,10 +292,10 @@ public func upload(
 public func upload(
     _ URLRequest: URLRequestConvertible,
     multipartFormData: (MultipartFormData) -> Void,
-    encodingMemoryThreshold: UInt64 = Manager.MultipartFormDataEncodingMemoryThreshold,
-    encodingCompletion: ((Manager.MultipartFormDataEncodingResult) -> Void)?)
+    encodingMemoryThreshold: UInt64 = SessionManager.MultipartFormDataEncodingMemoryThreshold,
+    encodingCompletion: ((SessionManager.MultipartFormDataEncodingResult) -> Void)?)
 {
-    return Manager.sharedInstance.upload(
+    return SessionManager.sharedInstance.upload(
         URLRequest,
         multipartFormData: multipartFormData,
         encodingMemoryThreshold: encodingMemoryThreshold,
@@ -308,7 +308,7 @@ public func upload(
 // MARK: URL Request
 
 /**
-    Creates a download request using the shared manager instance for the specified method and URL string.
+    Creates a download request using the shared session manager instance for the specified method and URL string.
 
     - parameter method:      The HTTP method.
     - parameter URLString:   The URL string.
@@ -329,7 +329,7 @@ public func download(
     destination: Request.DownloadFileDestination)
     -> Request
 {
-    return Manager.sharedInstance.download(
+    return SessionManager.sharedInstance.download(
         method,
         URLString,
         parameters: parameters,
@@ -340,7 +340,7 @@ public func download(
 }
 
 /**
-    Creates a download request using the shared manager instance for the specified URL request.
+    Creates a download request using the shared session manager instance for the specified URL request.
 
     - parameter URLRequest:  The URL request.
     - parameter destination: The closure used to determine the destination of the downloaded file.
@@ -349,13 +349,13 @@ public func download(
 */
 @discardableResult
 public func download(_ URLRequest: URLRequestConvertible, destination: Request.DownloadFileDestination) -> Request {
-    return Manager.sharedInstance.download(URLRequest, destination: destination)
+    return SessionManager.sharedInstance.download(URLRequest, destination: destination)
 }
 
 // MARK: Resume Data
 
 /**
-    Creates a request using the shared manager instance for downloading from the resume data produced from a
+    Creates a request using the shared session manager instance for downloading from the resume data produced from a
     previous request cancellation.
 
     - parameter resumeData:  The resume data. This is an opaque data blob produced by `NSURLSessionDownloadTask`
@@ -367,5 +367,5 @@ public func download(_ URLRequest: URLRequestConvertible, destination: Request.D
 */
 @discardableResult
 public func download(resumeData data: Data, destination: Request.DownloadFileDestination) -> Request {
-    return Manager.sharedInstance.download(data, destination: destination)
+    return SessionManager.sharedInstance.download(data, destination: destination)
 }
