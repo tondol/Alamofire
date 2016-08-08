@@ -258,7 +258,7 @@ public class SessionManager {
         queue.sync { dataTask = self.session.dataTask(with: urlRequest.urlRequest) }
 
         let request = Request(session: session, task: dataTask)
-        delegate[request.delegate.task] = request.delegate
+        delegate[request.delegate.task] = request
 
         if startRequestsImmediately {
             request.resume()
@@ -364,7 +364,7 @@ public class SessionManager {
             }
         }
 
-        delegate[request.delegate.task] = request.delegate
+        delegate[request.delegate.task] = request
 
         if startRequestsImmediately {
             request.resume()
@@ -640,7 +640,7 @@ public class SessionManager {
             }
         }
 
-        delegate[request.delegate.task] = request.delegate
+        delegate[request.delegate.task] = request
 
         if startRequestsImmediately {
             request.resume()
@@ -700,7 +700,7 @@ public class SessionManager {
 
         let request = Request(session: session, task: streamTask)
 
-        delegate[request.delegate.task] = request.delegate
+        delegate[request.delegate.task] = request
 
         if startRequestsImmediately {
             request.resume()
