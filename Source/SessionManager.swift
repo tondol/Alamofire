@@ -221,13 +221,13 @@ public class SessionManager {
 
     // MARK: - Data Request
 
-    /// Creates a data `Request` to retrieve the contents of the specified `method`, `urlString`, `parameters`,
-    /// `encoding` and `headers`.
+    /// Creates a data `Request` to retrieve the contents of a URL based on the specified `urlString`, `method`, 
+    /// `parameters`, `encoding` and `headers`.
     ///
     /// - parameter urlString:  The URL string.
     /// - parameter method:     The HTTP method.
     /// - parameter parameters: The parameters. `nil` by default.
-    /// - parameter encoding:   The parameter encoding. `.URL` by default.
+    /// - parameter encoding:   The parameter encoding. `.url` by default.
     /// - parameter headers:    The HTTP headers. `nil` by default.
     ///
     /// - returns: The created data `Request`.
@@ -246,7 +246,7 @@ public class SessionManager {
         return request(encodedURLRequest)
     }
 
-    /// Creates a data `Request` to retrieve the contents of the specified `urlRequest`.
+    /// Creates a data `Request` to retrieve the contents of a URL based on the specified `urlRequest`.
     ///
     /// If `startRequestsImmediately` is `true`, the request will have `resume()` called before being returned.
     ///
@@ -271,8 +271,8 @@ public class SessionManager {
 
     // MARK: URL Request
 
-    /// Creates a download `Request` to retrieve the contents of the specified `method`, `urlString`, `parameters`,
-    /// `encoding`, `headers` and save them to the `destination`.
+    /// Creates a download `Request` to retrieve the contents of a URL based on the specified `urlString`, `method`, 
+    /// `parameters`, `encoding`, `headers` and save them to the `destination`.
     ///
     /// If `startRequestsImmediately` is `true`, the request will have `resume()` called before being returned.
     ///
@@ -280,7 +280,7 @@ public class SessionManager {
     /// - parameter destination: The closure used to determine the destination of the downloaded file.
     /// - parameter method:      The HTTP method.
     /// - parameter parameters:  The parameters. `nil` by default.
-    /// - parameter encoding:    The parameter encoding. `.URL` by default.
+    /// - parameter encoding:    The parameter encoding. `.url` by default.
     /// - parameter headers:     The HTTP headers. `nil` by default.
     ///
     /// - returns: The created download `Request`.
@@ -300,8 +300,8 @@ public class SessionManager {
         return download(encodedURLRequest, to: destination)
     }
 
-    /// Creates a download `Request` to retrieve the contents of the specified `urlRequest` and save them to
-    /// the `destination`.
+    /// Creates a download `Request` to retrieve the contents of a URL based on the specified `urlRequest` and save
+    /// them to the `destination`.
     ///
     /// If `startRequestsImmediately` is `true`, the request will have `resume()` called before being returned.
     ///
