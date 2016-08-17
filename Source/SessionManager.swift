@@ -25,7 +25,7 @@
 import Foundation
 
 /// Responsible for creating and managing `Request` objects, as well as their underlying `NSURLSession`.
-public class SessionManager {
+open class SessionManager {
 
     // MARK: - Helper Types
 
@@ -65,7 +65,7 @@ public class SessionManager {
 
     /// A default instance of `SessionManager`, used by top-level Alamofire request methods, and suitable for use
     /// directly for any ad hoc requests.
-    public static let `default`: SessionManager = {
+    open static let `default`: SessionManager = {
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
 
@@ -73,7 +73,7 @@ public class SessionManager {
     }()
 
     /// Creates default values for the "Accept-Encoding", "Accept-Language" and "User-Agent" headers.
-    public static let defaultHTTPHeaders: [String: String] = {
+    open static let defaultHTTPHeaders: [String: String] = {
         // Accept-Encoding HTTP Header; see https://tools.ietf.org/html/rfc7230#section-4.2.3
         let acceptEncoding: String = "gzip;q=1.0, compress;q=0.5"
 
@@ -138,16 +138,16 @@ public class SessionManager {
     }()
 
     /// Default memory threshold used when encoding `MultipartFormData` in bytes.
-    public static let multipartFormDataEncodingMemoryThreshold: UInt64 = 10_000_000
+    open static let multipartFormDataEncodingMemoryThreshold: UInt64 = 10_000_000
 
     /// The underlying session.
-    public let session: URLSession
+    open let session: URLSession
 
     /// The session delegate handling all the task and session delegate callbacks.
-    public let delegate: SessionDelegate
+    open let delegate: SessionDelegate
 
     /// Whether to start requests immediately after being constructed. `true` by default.
-    public var startRequestsImmediately: Bool = true
+    open var startRequestsImmediately: Bool = true
 
     /// The background completion handler closure provided by the UIApplicationDelegate
     /// `application:handleEventsForBackgroundURLSession:completionHandler:` method. By setting the background
@@ -158,7 +158,7 @@ public class SessionManager {
     /// SessionDelegate `sessionDidFinishEventsForBackgroundURLSession` and manually call the handler when finished.
     ///
     /// `nil` by default.
-    public var backgroundCompletionHandler: (() -> Void)?
+    open var backgroundCompletionHandler: (() -> Void)?
 
     let queue = DispatchQueue(label: "Alamofire Session Manager Queue")
 
@@ -221,7 +221,7 @@ public class SessionManager {
 
     // MARK: - Data Request
 
-    /// Creates a data `Request` to retrieve the contents of a URL based on the specified `urlString`, `method`, 
+    /// Creates a data `Request` to retrieve the contents of a URL based on the specified `urlString`, `method`,
     /// `parameters`, `encoding` and `headers`.
     ///
     /// - parameter urlString:  The URL string.
@@ -232,10 +232,10 @@ public class SessionManager {
     ///
     /// - returns: The created data `Request`.
     @discardableResult
-    public func request(
+    open func request(
         _ urlString: URLStringConvertible,
         withMethod method: HTTPMethod,
-        parameters: [String: AnyObject]? = nil,
+        parameters: [String: Any]? = nil,
         encoding: ParameterEncoding = .url,
         headers: [String: String]? = nil)
         -> Request
@@ -253,7 +253,7 @@ public class SessionManager {
     /// - parameter urlRequest: The URL request
     ///
     /// - returns: The created data `Request`.
-    public func request(_ urlRequest: URLRequestConvertible) -> Request {
+    open func request(_ urlRequest: URLRequestConvertible) -> Request {
         var dataTask: URLSessionDataTask!
         queue.sync { dataTask = self.session.dataTask(with: urlRequest.urlRequest) }
 
@@ -271,7 +271,7 @@ public class SessionManager {
 
     // MARK: URL Request
 
-    /// Creates a download `Request` to retrieve the contents of a URL based on the specified `urlString`, `method`, 
+    /// Creates a download `Request` to retrieve the contents of a URL based on the specified `urlString`, `method`,
     /// `parameters`, `encoding`, `headers` and save them to the `destination`.
     ///
     /// If `startRequestsImmediately` is `true`, the request will have `resume()` called before being returned.
@@ -285,11 +285,11 @@ public class SessionManager {
     ///
     /// - returns: The created download `Request`.
     @discardableResult
-    public func download(
+    open func download(
         _ urlString: URLStringConvertible,
         to destination: Request.DownloadFileDestination,
         withMethod method: HTTPMethod,
-        parameters: [String: AnyObject]? = nil,
+        parameters: [String: Any]? = nil,
         encoding: ParameterEncoding = .url,
         headers: [String: String]? = nil)
         -> Request
@@ -310,7 +310,7 @@ public class SessionManager {
     ///
     /// - returns: The created download `Request`.
     @discardableResult
-    public func download(
+    open func download(
         _ urlRequest: URLRequestConvertible,
         to destination: Request.DownloadFileDestination)
         -> Request
@@ -332,7 +332,7 @@ public class SessionManager {
     ///
     /// - returns: The created download `Request`.
     @discardableResult
-    public func download(resourceWithin resumeData: Data, to destination: Request.DownloadFileDestination) -> Request {
+    open func download(resourceWithin resumeData: Data, to destination: Request.DownloadFileDestination) -> Request {
         return download(.resumeData(resumeData), to: destination)
     }
 
@@ -388,7 +388,7 @@ public class SessionManager {
     ///
     /// - returns: The created upload `Request`.
     @discardableResult
-    public func upload(
+    open func upload(
         _ fileURL: URL,
         to urlString: URLStringConvertible,
         withMethod method: HTTPMethod,
@@ -408,7 +408,7 @@ public class SessionManager {
     ///
     /// - returns: The created upload `Request`.
     @discardableResult
-    public func upload(_ fileURL: URL, with urlRequest: URLRequestConvertible) -> Request {
+    open func upload(_ fileURL: URL, with urlRequest: URLRequestConvertible) -> Request {
         return upload(.file(fileURL, urlRequest.urlRequest))
     }
 
@@ -425,7 +425,7 @@ public class SessionManager {
     ///
     /// - returns: The created upload `Request`.
     @discardableResult
-    public func upload(
+    open func upload(
         _ data: Data,
         to urlString: URLStringConvertible,
         withMethod method: HTTPMethod,
@@ -445,7 +445,7 @@ public class SessionManager {
     ///
     /// - returns: The created upload `Request`.
     @discardableResult
-    public func upload(_ data: Data, with urlRequest: URLRequestConvertible) -> Request {
+    open func upload(_ data: Data, with urlRequest: URLRequestConvertible) -> Request {
         return upload(.data(data, urlRequest.urlRequest))
     }
 
@@ -462,7 +462,7 @@ public class SessionManager {
     ///
     /// - returns: The created upload `Request`.
     @discardableResult
-    public func upload(
+    open func upload(
         _ stream: InputStream,
         to urlString: URLStringConvertible,
         withMethod method: HTTPMethod,
@@ -482,7 +482,7 @@ public class SessionManager {
     ///
     /// - returns: The created upload `Request`.
     @discardableResult
-    public func upload(_ stream: InputStream, with urlRequest: URLRequestConvertible) -> Request {
+    open func upload(_ stream: InputStream, with urlRequest: URLRequestConvertible) -> Request {
         return upload(.stream(stream, urlRequest.urlRequest))
     }
 
@@ -513,8 +513,8 @@ public class SessionManager {
     /// - parameter method:                  The HTTP method.
     /// - parameter headers:                 The HTTP headers. `nil` by default.
     /// - parameter encodingCompletion:      The closure called when the `MultipartFormData` encoding is complete.
-    public func upload(
-        multipartFormData: (MultipartFormData) -> Void,
+    open func upload(
+        multipartFormData: @escaping (MultipartFormData) -> Void,
         usingThreshold encodingMemoryThreshold: UInt64 = SessionManager.multipartFormDataEncodingMemoryThreshold,
         to urlString: URLStringConvertible,
         withMethod method: HTTPMethod,
@@ -554,8 +554,8 @@ public class SessionManager {
     ///                                      `multipartFormDataEncodingMemoryThreshold` by default.
     /// - parameter urlRequest:              The URL request.
     /// - parameter encodingCompletion:      The closure called when the `MultipartFormData` encoding is complete.
-    public func upload(
-        multipartFormData: (MultipartFormData) -> Void,
+    open func upload(
+        multipartFormData: @escaping (MultipartFormData) -> Void,
         usingThreshold encodingMemoryThreshold: UInt64 = SessionManager.multipartFormDataEncodingMemoryThreshold,
         with urlRequest: URLRequestConvertible,
         encodingCompletion: ((MultipartFormDataEncodingResult) -> Void)?)
@@ -664,7 +664,7 @@ public class SessionManager {
     ///
     /// - returns: The created stream `Request`.
     @discardableResult
-    public func stream(withHostName hostName: String, port: Int) -> Request {
+    open func stream(withHostName hostName: String, port: Int) -> Request {
         return stream(.stream(hostName, port))
     }
 
@@ -678,7 +678,7 @@ public class SessionManager {
     ///
     /// - returns: The created stream `Request`.
     @discardableResult
-    public func stream(with netService: NetService) -> Request {
+    open func stream(with netService: NetService) -> Request {
         return stream(.netService(netService))
     }
 

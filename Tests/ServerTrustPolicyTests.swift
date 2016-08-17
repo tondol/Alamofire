@@ -51,7 +51,7 @@ private struct TestCertificates {
         class Locater {}
         let filePath = Bundle(for: Locater.self).path(forResource: fileName, ofType: "cer")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: filePath))
-        let certificate = SecCertificateCreateWithData(nil, data)!
+        let certificate = SecCertificateCreateWithData(nil, data as CFData)!
 
         return certificate
     }
@@ -188,7 +188,7 @@ private enum TestTrusts {
     static func trustWithCertificates(_ certificates: [SecCertificate]) -> SecTrust {
         let policy = SecPolicyCreateBasicX509()
         var trust: SecTrust?
-        SecTrustCreateWithCertificates(certificates, policy, &trust)
+        SecTrustCreateWithCertificates(certificates as CFTypeRef, policy, &trust)
 
         return trust!
     }
@@ -198,7 +198,7 @@ private enum TestTrusts {
 
 class ServerTrustPolicyTestCase: BaseTestCase {
     func setRootCertificateAsLoneAnchorCertificateForTrust(_ trust: SecTrust) {
-        SecTrustSetAnchorCertificates(trust, [TestCertificates.rootCA])
+        SecTrustSetAnchorCertificates(trust, [TestCertificates.rootCA] as CFArray)
         SecTrustSetAnchorCertificatesOnly(trust, true)
     }
 
@@ -235,7 +235,7 @@ class ServerTrustPolicyExplorationBasicX509PolicyValidationTestCase: ServerTrust
 
         // When
         let policies = [SecPolicyCreateBasicX509()]
-        SecTrustSetPolicies(trust, policies)
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertTrue(trustIsValid(trust), "trust should be valid")
@@ -248,7 +248,7 @@ class ServerTrustPolicyExplorationBasicX509PolicyValidationTestCase: ServerTrust
 
         // When
         let policies = [SecPolicyCreateBasicX509()]
-        SecTrustSetPolicies(trust, policies)
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertTrue(trustIsValid(trust), "trust should be valid")
@@ -261,7 +261,7 @@ class ServerTrustPolicyExplorationBasicX509PolicyValidationTestCase: ServerTrust
 
         // When
         let policies = [SecPolicyCreateBasicX509()]
-        SecTrustSetPolicies(trust, policies)
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertTrue(trustIsValid(trust), "trust should be valid")
@@ -274,7 +274,7 @@ class ServerTrustPolicyExplorationBasicX509PolicyValidationTestCase: ServerTrust
 
         // When
         let policies = [SecPolicyCreateBasicX509()]
-        SecTrustSetPolicies(trust, policies)
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertFalse(trustIsValid(trust), "trust should not be valid")
@@ -295,8 +295,8 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
         setRootCertificateAsLoneAnchorCertificateForTrust(trust)
 
         // When
-        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org")]
-        SecTrustSetPolicies(trust, policies)
+        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org" as CFString)]
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertTrue(trustIsValid(trust), "trust should be valid")
@@ -308,8 +308,8 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
         setRootCertificateAsLoneAnchorCertificateForTrust(trust)
 
         // When
-        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org")]
-        SecTrustSetPolicies(trust, policies)
+        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org" as CFString)]
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertTrue(trustIsValid(trust), "trust should be valid")
@@ -321,8 +321,8 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
         setRootCertificateAsLoneAnchorCertificateForTrust(trust)
 
         // When
-        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org")]
-        SecTrustSetPolicies(trust, policies)
+        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org" as CFString)]
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertFalse(trustIsValid(trust), "trust should not be valid")
@@ -334,8 +334,8 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
         setRootCertificateAsLoneAnchorCertificateForTrust(trust)
 
         // When
-        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org")]
-        SecTrustSetPolicies(trust, policies)
+        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org" as CFString)]
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertTrue(trustIsValid(trust), "trust should be valid")
@@ -347,8 +347,8 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
         setRootCertificateAsLoneAnchorCertificateForTrust(trust)
 
         // When
-        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org")]
-        SecTrustSetPolicies(trust, policies)
+        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org" as CFString)]
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertTrue(trustIsValid(trust), "trust should be valid")
@@ -360,8 +360,8 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
         setRootCertificateAsLoneAnchorCertificateForTrust(trust)
 
         // When
-        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org")]
-        SecTrustSetPolicies(trust, policies)
+        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org" as CFString)]
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertFalse(trustIsValid(trust), "trust should not be valid")
@@ -374,11 +374,11 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
 
         // When
         let policies = [
-            SecPolicyCreateSSL(true, "test.alamofire.org"),
-            SecPolicyCreateSSL(true, "blog.alamofire.org"),
-            SecPolicyCreateSSL(true, "www.alamofire.org")
+            SecPolicyCreateSSL(true, "test.alamofire.org" as CFString),
+            SecPolicyCreateSSL(true, "blog.alamofire.org" as CFString),
+            SecPolicyCreateSSL(true, "www.alamofire.org" as CFString)
         ]
-        SecTrustSetPolicies(trust, policies)
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertTrue(trustIsValid(trust), "trust should not be valid")
@@ -391,7 +391,7 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
 
         // When
         let policies = [SecPolicyCreateSSL(true, nil)]
-        SecTrustSetPolicies(trust, policies)
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertTrue(trustIsValid(trust), "trust should not be valid")
@@ -403,8 +403,8 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
         setRootCertificateAsLoneAnchorCertificateForTrust(trust)
 
         // When
-        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org")]
-        SecTrustSetPolicies(trust, policies)
+        let policies = [SecPolicyCreateSSL(true, "test.alamofire.org" as CFString)]
+        SecTrustSetPolicies(trust, policies as CFTypeRef)
 
         // Then
         XCTAssertFalse(trustIsValid(trust), "trust should not be valid")
