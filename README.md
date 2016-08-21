@@ -33,7 +33,7 @@ In order to keep Alamofire focused specifically on core networking implementatio
 
 - iOS 9.0+ / Mac OS X 10.11+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 8.0+
-- Swift 2.2 or 2.3
+- Swift 3.0+
 
 ## Migration Guides
 
