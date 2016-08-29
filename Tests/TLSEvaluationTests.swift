@@ -81,7 +81,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Given
         weak var expectation = self.expectation(description: "\(urlString)")
         let manager = SessionManager(configuration: configuration)
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -95,12 +95,13 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Then
         XCTAssertNotNil(error)
 
-        if let error = error where error.domain == NSURLErrorDomain {
-            XCTAssertEqual(error.code, NSURLErrorServerCertificateUntrusted)
-        } else if let error = error where error.domain == (kCFErrorDomainCFNetwork as String) {
-            XCTAssertEqual(error.code, Int(CFNetworkErrors.CFErrorHTTPSProxyConnectionFailure.rawValue))
+        if let error = error as? URLError {
+            XCTAssertEqual(error.code, .serverCertificateUntrusted)
+        } else if let error = error as? NSError {
+            XCTAssertEqual(error.domain, kCFErrorDomainCFNetwork as String)
+            XCTAssertEqual(error.code, Int(CFNetworkErrors.cfErrorHTTPSProxyConnectionFailure.rawValue))
         } else {
-            XCTFail("error should be an NSError")
+            XCTFail("error should be a URLError or NSError from CFNetwork")
         }
     }
 
@@ -115,7 +116,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -129,10 +130,10 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Then
         XCTAssertNotNil(error, "error should not be nil")
 
-        if let code = error?.code {
-            XCTAssertEqual(code, NSURLErrorCancelled, "code should be cancelled")
+        if let error = error as? URLError {
+            XCTAssertEqual(error.code, .cancelled, "code should be cancelled")
         } else {
-            XCTFail("error should be an NSError")
+            XCTFail("error should be an URLError")
         }
     }
 
@@ -151,7 +152,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -165,10 +166,10 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Then
         XCTAssertNotNil(error, "error should not be nil")
 
-        if let code = error?.code {
-            XCTAssertEqual(code, NSURLErrorCancelled, "code should be cancelled")
+        if let error = error as? URLError {
+            XCTAssertEqual(error.code, .cancelled, "code should be cancelled")
         } else {
-            XCTFail("error should be an NSError")
+            XCTFail("error should be an URLError")
         }
     }
 
@@ -191,7 +192,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -205,10 +206,10 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Then
         XCTAssertNotNil(error, "error should not be nil")
 
-        if let code = error?.code {
-            XCTAssertEqual(code, NSURLErrorCancelled, "code should be cancelled")
+        if let error = error as? URLError {
+            XCTAssertEqual(error.code, .cancelled, "code should be cancelled")
         } else {
-            XCTFail("error should be an NSError")
+            XCTFail("error should be an URLError")
         }
     }
 
@@ -225,7 +226,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -253,7 +254,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -281,7 +282,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -311,7 +312,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -325,10 +326,10 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Then
         XCTAssertNotNil(error, "error should not be nil")
 
-        if let code = error?.code {
-            XCTAssertEqual(code, NSURLErrorCancelled, "code should be cancelled")
+        if let error = error as? URLError {
+            XCTAssertEqual(error.code, .cancelled, "code should be cancelled")
         } else {
-            XCTFail("error should be an NSError")
+            XCTFail("error should be an URLError")
         }
     }
 
@@ -345,7 +346,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -373,7 +374,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -401,7 +402,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -427,7 +428,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -459,7 +460,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -489,7 +490,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         )
 
         weak var expectation = self.expectation(description: "\(urlString)")
-        var error: NSError?
+        var error: Error?
 
         // When
         manager.request(urlString, withMethod: .get)
@@ -503,10 +504,10 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Then
         XCTAssertNotNil(error, "error should not be nil")
 
-        if let code = error?.code {
-            XCTAssertEqual(code, NSURLErrorCancelled, "code should be cancelled")
+        if let error = error as? URLError {
+            XCTAssertEqual(error.code, .cancelled, "code should be cancelled")
         } else {
-            XCTFail("error should be an NSError")
+            XCTFail("error should be an URLError")
         }
     }
 }
