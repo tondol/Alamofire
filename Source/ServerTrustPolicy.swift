@@ -230,12 +230,10 @@ public enum ServerTrustPolicy {
 
         var result = SecTrustResultType.invalid
         let status = SecTrustEvaluate(trust, &result)
-    #endif
 
         if status == errSecSuccess {
             let unspecified = SecTrustResultType.unspecified
             let proceed = SecTrustResultType.proceed
-
 
             isValid = result == unspecified || result == proceed
         }

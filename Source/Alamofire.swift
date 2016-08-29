@@ -81,11 +81,9 @@ extension URLRequest {
     ///
     /// - returns: The new `URLRequest` instance.
     public init(urlString: URLStringConvertible, method: HTTPMethod, headers: [String: String]? = nil) {
-        if let request = urlString as? URLRequest {
-            self = request.urlRequest
-        } else {
-            self.init(url: URL(string: urlString.urlString)!)
-        }
+        self.init(url: URL(string: urlString.urlString)!)
+
+        if let request = urlString as? URLRequest { self = request.urlRequest }
 
         httpMethod = method.rawValue
 

@@ -117,8 +117,8 @@ open class SessionManager {
 
                 let alamofireVersion: String = {
                     guard
-                        let afInfo = NSBundle(forClass: Manager.self).infoDictionary,
-                        build = afInfo["CFBundleShortVersionString"]
+                        let afInfo = Bundle(for: SessionManager.self).infoDictionary,
+                        let build = afInfo["CFBundleShortVersionString"]
                     else { return "Unknown" }
 
                     return "Alamofire/\(build)"
