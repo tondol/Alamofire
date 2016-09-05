@@ -240,8 +240,8 @@ class SessionManagerTestCase: BaseTestCase {
 
         // When
         manager.request(urlRequest)
-            .response { _, responseResponse, _, _ in
-                response = responseResponse
+            .response { resp in
+                response = resp.response
                 expectation.fulfill()
             }
             .resume()
@@ -382,7 +382,7 @@ class SessionManagerTestCase: BaseTestCase {
         sessionManager.retrier = handler
 
         let expectation = self.expectation(description: "request should eventually fail")
-        var response: Response<Any>?
+        var response: DataResponse<Any>?
 
         // When
         sessionManager.request("https://httpbin.org/basic-auth/user/password", withMethod: .get)
@@ -410,7 +410,7 @@ class SessionManagerTestCase: BaseTestCase {
         sessionManager.retrier = handler
 
         let expectation = self.expectation(description: "request should eventually fail")
-        var response: Response<Any>?
+        var response: DataResponse<Any>?
 
         // When
         sessionManager.request("https://httpbin.org/basic-auth/user/password", withMethod: .get)
@@ -480,7 +480,7 @@ class SessionManagerConfigurationHeadersTestCase: BaseTestCase {
 
         let expectation = self.expectation(description: "request should complete successfully")
 
-        var response: Response<Any>?
+        var response: DataResponse<Any>?
 
         // When
         manager.request("https://httpbin.org/headers", withMethod: .get)
