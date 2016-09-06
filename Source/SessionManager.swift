@@ -149,7 +149,7 @@ open class SessionManager {
     /// `nil` by default.
     open var backgroundCompletionHandler: (() -> Void)?
 
-    let queue = DispatchQueue(label: "org.alamofire.session-manager." + NSUUID().uuidString)
+    let queue = DispatchQueue(label: "org.alamofire.session-manager." + UUID().uuidString)
 
     // MARK: - Lifecycle
 
