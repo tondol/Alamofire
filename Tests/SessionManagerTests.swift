@@ -302,7 +302,7 @@ class SessionManagerTestCase: BaseTestCase {
         sessionManager.startRequestsImmediately = false
 
         // When
-        let request = sessionManager.request("https://httpbin.org/get", withMethod: .get)
+        let request = sessionManager.request("https://httpbin.org/get")
 
         // Then
         XCTAssertEqual(request.task.originalRequest?.httpMethod, adapter.method.rawValue)
@@ -333,7 +333,7 @@ class SessionManagerTestCase: BaseTestCase {
         sessionManager.startRequestsImmediately = false
 
         // When
-        let request = sessionManager.upload("data".data(using: .utf8)!, to: "https://httpbin.org/post", withMethod: .post)
+        let request = sessionManager.upload("data".data(using: .utf8)!, to: "https://httpbin.org/post")
 
         // Then
         XCTAssertEqual(request.task.originalRequest?.httpMethod, adapter.method.rawValue)
@@ -349,7 +349,7 @@ class SessionManagerTestCase: BaseTestCase {
 
         // When
         let fileURL = URL(fileURLWithPath: "/path/to/some/file.txt")
-        let request = sessionManager.upload(fileURL, to: "https://httpbin.org/post", withMethod: .post)
+        let request = sessionManager.upload(fileURL, to: "https://httpbin.org/post")
 
         // Then
         XCTAssertEqual(request.task.originalRequest?.httpMethod, adapter.method.rawValue)
@@ -365,7 +365,7 @@ class SessionManagerTestCase: BaseTestCase {
 
         // When
         let inputStream = InputStream(data: "data".data(using: .utf8)!)
-        let request = sessionManager.upload(inputStream, to: "https://httpbin.org/post", withMethod: .post)
+        let request = sessionManager.upload(inputStream, to: "https://httpbin.org/post")
 
         // Then
         XCTAssertEqual(request.task.originalRequest?.httpMethod, adapter.method.rawValue)
@@ -385,7 +385,7 @@ class SessionManagerTestCase: BaseTestCase {
         var response: DataResponse<Any>?
 
         // When
-        sessionManager.request("https://httpbin.org/basic-auth/user/password", withMethod: .get)
+        sessionManager.request("https://httpbin.org/basic-auth/user/password")
             .validate()
             .responseJSON { jsonResponse in
                 response = jsonResponse
@@ -413,7 +413,7 @@ class SessionManagerTestCase: BaseTestCase {
         var response: DataResponse<Any>?
 
         // When
-        sessionManager.request("https://httpbin.org/basic-auth/user/password", withMethod: .get)
+        sessionManager.request("https://httpbin.org/basic-auth/user/password")
             .validate()
             .responseJSON { jsonResponse in
                 response = jsonResponse
@@ -483,7 +483,7 @@ class SessionManagerConfigurationHeadersTestCase: BaseTestCase {
         var response: DataResponse<Any>?
 
         // When
-        manager.request("https://httpbin.org/headers", withMethod: .get)
+        manager.request("https://httpbin.org/headers")
             .responseJSON { closureResponse in
                 response = closureResponse
                 expectation.fulfill()
