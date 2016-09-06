@@ -266,7 +266,7 @@ open class SessionManager {
     /// `parameters`, `encoding`, `headers` and save them to the `destination`.
     ///
     /// If `destination` is not specified, the contents will remain in the temporary location determined by the
-    /// URL session.
+    /// underlying URL session.
     /// 
     /// If `startRequestsImmediately` is `true`, the request will have `resume()` called before being returned.
     ///
@@ -298,7 +298,7 @@ open class SessionManager {
     /// them to the `destination`.
     ///
     /// If `destination` is not specified, the contents will remain in the temporary location determined by the
-    /// URL session.
+    /// underlying URL session.
     ///
     /// If `startRequestsImmediately` is `true`, the request will have `resume()` called before being returned.
     ///
@@ -321,7 +321,7 @@ open class SessionManager {
     /// the contents of the original request and save them to the `destination`.
     ///
     /// If `destination` is not specified, the contents will remain in the temporary location determined by the
-    /// URL session.
+    /// underlying URL session.
     ///
     /// If `startRequestsImmediately` is `true`, the request will have `resume()` called before being returned.
     ///
