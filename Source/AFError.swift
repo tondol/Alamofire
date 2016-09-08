@@ -37,7 +37,7 @@ public enum AFError: Error {
     /// - missingURL:                 The URL request did not have a URL to encode.
     /// - jsonEncodingFailed:         JSON serialization failed with an underlying system error during the
     ///                               encoding process.
-    /// - propertyListEncodingFailed: Property list serialization failed with an underlying system error during 
+    /// - propertyListEncodingFailed: Property list serialization failed with an underlying system error during
     ///                               encoding process.
     public enum ParameterEncodingFailureReason {
         case missingURL
@@ -133,7 +133,7 @@ public enum AFError: Error {
 // MARK: - Error Booleans
 
 extension AFError {
-    /// Returns whether the AFError is a parameter encoding error. When `true`, the `underlyingError` property will 
+    /// Returns whether the AFError is a parameter encoding error. When `true`, the `underlyingError` property will
     /// contain the associated value.
     public var isParameterEncodingError: Bool {
         if case .multipartEncodingFailed = self { return true }
@@ -175,7 +175,7 @@ extension AFError {
         }
     }
 
-    /// The `Error` returned by a system framework associated with a `.parameterEncodingFailed`, 
+    /// The `Error` returned by a system framework associated with a `.parameterEncodingFailed`,
     /// `.multipartEncodingFailed` or `.responseSerializationFailed` error.
     public var underlyingError: Error? {
         switch self {

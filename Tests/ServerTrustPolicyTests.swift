@@ -207,7 +207,6 @@ class ServerTrustPolicyTestCase: BaseTestCase {
 
         var result = SecTrustResultType.invalid
         let status = SecTrustEvaluate(trust, &result)
-    #endif
 
         if status == errSecSuccess {
             let unspecified = SecTrustResultType.unspecified
