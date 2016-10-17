@@ -24,7 +24,7 @@
 
 import Foundation
 
-#if os(iOS) || os(watchOS) || os(tvOS)
+#if os(iOS) || true || os(tvOS)
 import MobileCoreServices
 #elseif os(macOS)
 import CoreServices
